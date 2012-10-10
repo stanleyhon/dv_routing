@@ -1,0 +1,15 @@
+A -> B = 1000 via B
+A -> C = 1100 via B
+A -> D = 800 via D
+
+B -> A = 1000 via A
+B -> C = 100 via C
+B -> D = 950 via C
+
+C -> A = 1100 via B
+C -> B = 100 via B
+C -> D = 850 via D
+
+D -> A = 800 via A
+D -> B = 950 via C
+D -> C = 850 via C

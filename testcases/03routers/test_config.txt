@@ -1,0 +1,8 @@
+A -> B = 300 via B
+A -> C = 700 via B
+
+B -> A = 300 via A
+B -> C = 400 via C
+
+C -> A = 700 via B
+C -> B = 400 via B

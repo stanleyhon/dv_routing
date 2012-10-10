@@ -1,0 +1,81 @@
+A -> B = 30 via B
+A -> C = 60 via C
+A -> D = 100 via C
+A -> E = 150 via C
+A -> F = 70 via B
+A -> G = 140 via C
+A -> H = 140 via C
+A -> I = 100 via B
+
+B -> A = 30 via A
+B -> C = 90 via A
+B -> D = 130 via A
+B -> E = 180 via A
+B -> F = 40 via F
+B -> G = 170 via A
+B -> H = 170 via A
+B -> I = 70 via F
+
+C -> A = 60 via A
+C -> B = 90 via A
+C -> D = 40 via D
+C -> E = 90 via D
+C -> F = 130 via A
+C -> G = 80 via D
+C -> H = 80 via D
+C -> I = 160 via A
+
+D -> A = 100 via C
+D -> B = 130 via C
+D -> C = 40 via C
+D -> E = 50 via E
+D -> F = 170 via C
+D -> G = 40 via G
+D -> H = 40 via H
+D -> I = 200 via C
+
+E -> A = 150 via D
+E -> B = 180 via D
+E -> C = 90 via D
+E -> D = 50 via D
+E -> F = 220 via D
+E -> G = 90 via D
+E -> H = 90 via D
+E -> I = 250 via D
+
+F -> A = 70 via B
+F -> B = 40 via B
+F -> C = 130 via B
+F -> D = 170 via B
+F -> E = 220 via B
+F -> G = 210 via B
+F -> H = 210 via B
+F -> I = 30 via I
+
+G -> A = 140 via D
+G -> B = 170 via D
+G -> C = 80 via D
+G -> D = 40 via D
+G -> E = 90 via D
+G -> F = 210 via D
+G -> H = 80 via D
+G -> I = 240 via D
+
+H -> A = 140 via D
+H -> B = 170 via D
+H -> C = 80 via D
+H -> D = 40 via D
+H -> E = 90 via D
+H -> F = 210 via D
+H -> G = 80 via D
+H -> I = 240 via D
+
+I -> A = 100 via F
+I -> B = 70 via F
+I -> C = 160 via F
+I -> D = 200 via F
+I -> E = 250 via F
+I -> F = 30 via F
+I -> G = 240 via F
+I -> H = 240 via F
+

@@ -1,0 +1,63 @@
+A -> B = 20 via B
+A -> C = 25 via D
+A -> D = 10 via D
+A -> E = 29 via D
+A -> F = 21 via D
+A -> G = 27 via D
+A -> H = 19 via D
+
+B -> A = 20 via A
+B -> C = 7 via C
+B -> D = 22 via C
+B -> E = 15 via C
+B -> F = 23 via C
+B -> G = 17 via C
+B -> H = 25 via C
+
+C -> A = 25 via D
+C -> B = 7 via B
+C -> D = 15 via D
+C -> E = 8 via E
+C -> F = 16 via E
+C -> G = 10 via E
+C -> H = 18 via E
+
+D -> A = 10 via A
+D -> B = 22 via C
+D -> C = 15 via C
+D -> E = 19 via H
+D -> F = 11 via H
+D -> G = 17 via H
+D -> H = 9 via H
+
+E -> A = 29 via F or G
+E -> B = 15 via C
+E -> C = 8 via C
+E -> D = 19 via F or G
+E -> F = 8 via F
+E -> G = 2 via G
+E -> H = 10 via F or G
+
+F -> A = 21 via H
+F -> B = 23 via E 
+F -> C = 16 via E
+F -> D = 11 via H
+F -> E = 8 via E
+F -> G = 10 via E or H
+F -> H = 2 via H
+
+G -> A = 27 via H
+G -> B = 17 via E
+G -> C = 10 via E
+G -> D = 17 via H
+G -> E = 2 via E
+G -> F = 10 via E or H
+G -> H = 8 via H
+
+H -> A = 19 via D
+H -> B = 25 via F or G
+H -> C = 18 via F or G
+H -> D = 9 via D
+H -> E = 10 via F or G
+H -> F = 2 via F
+H -> G = 8 via G

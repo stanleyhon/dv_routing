@@ -1,0 +1,35 @@
+A -> B = 2 via B
+A -> C = 3 via D
+A -> D = 1 via D
+A -> E = 2 via D
+A -> F = 4 via D
+
+B -> A = 2 via A
+B -> C = 3 via C
+B -> D = 2 via D
+B -> E = 3 via D
+B -> F = 5 via D
+
+C -> A = 3 via E
+C -> B = 3 via B
+C -> D = 2 via E
+C -> E = 1 via E
+C -> F = 3 via E
+
+D -> A = 1 via A
+D -> B = 2 via B
+D -> C = 2 via E
+D -> E = 1 via E
+D -> F = 3 via E
+
+E -> A = 2 via D
+E -> B = 3 via D
+E -> C = 1 via C
+E -> D = 1 via D
+E -> F = 2 via F
+
+F -> A = 4 via E
+F -> B = 5 via E
+F -> C = 3 via E
+F -> D = 3 via E
+F -> E = 2 via E

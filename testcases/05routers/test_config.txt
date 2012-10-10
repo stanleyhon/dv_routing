@@ -1,0 +1,24 @@
+A -> B = 10 via B
+A -> C = 10.5 via C
+A -> D = 22 via B
+A -> E = 27 via B
+
+B -> A = 10 via A
+B -> C = 20.5 via A
+B -> D = 12 via D
+B -> E = 17 via D
+
+C -> A = 10.5 via A
+C -> B = 20.5 via A
+C -> D = 12 via D
+C -> E = 17 via D
+
+D -> A = 22 via B
+D -> B = 12 via B
+D -> C = 12 via C
+D -> E = 5 via E
+
+E -> A = 27 via D
+E -> B = 17 via D
+E -> C = 17 via D
+E -> D = 5 via D

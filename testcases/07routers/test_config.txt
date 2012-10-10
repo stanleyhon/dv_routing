@@ -1,0 +1,48 @@
+A -> B = 4 via B
+A -> C = 5 via C
+A -> D = 12 via C
+A -> E = 10 via B
+A -> F = 12 via B
+A -> G = 12 via C
+
+B -> A = 4 via A
+B -> C = 7 via C
+B -> D = 9 via E
+B -> E = 6 via E
+B -> F = 8 via E
+B -> G = 12 via E
+
+C -> A = 5 via A
+C -> B = 7 via B
+C -> D = 7 via D
+C -> E = 10 via D
+C -> F = 10 via F
+C -> G = 7 via G
+
+D -> A = 12 via C
+D -> B = 9 via E
+D -> C = 7 via C
+D -> E = 3 via E
+D -> F = 5 via E
+D -> G = 9 via E
+
+E -> A = 10 via B
+E -> B = 6 via B
+E -> C = 10 via D
+E -> D = 3 via D
+E -> F = 2 via F
+E -> G = 6 via F
+
+F -> A = 12 via E
+F -> B = 8 via E
+F -> C = 10 via C
+F -> D = 5 via E
+F -> E = 2 via E
+F -> G = 4 via G
+
+G -> A = 12 via C
+G -> B = 12 via F
+G -> C = 7 via C
+G -> D = 9 via F
+G -> E = 6 via F
+G -> F = 4 via F

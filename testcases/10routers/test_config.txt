@@ -1,0 +1,99 @@
+A -> B = 50 via B
+A -> C = 90 via B
+A -> D = 115 via B
+A -> E = 150 via B
+A -> F = 30 via F
+A -> G = 135 via B
+A -> H = 75 via F
+A -> I = 170 via B
+A -> J = 105 via F
+
+B -> A = 50 via A
+B -> C = 40 via C
+B -> D = 65 via C
+B -> E = 100 via C
+B -> F = 80 via A
+B -> G = 85 via C
+B -> H = 125 via A
+B -> I = 120 via C
+B -> J = 155 via A
+
+C -> A = 90 via B
+C -> B = 40 via B
+C -> D = 25 via D
+C -> E = 60 via D
+C -> F = 120 via B
+C -> G = 45 via D
+C -> H = 165 via B
+C -> I = 80 via D
+C -> J = 150 via D
+
+D -> A = 115 via C
+D -> B = 65 via C
+D -> C = 25 via C
+D -> E = 35 via E
+D -> F = 145 via C
+D -> G = 20 via G
+D -> H = 155 via G
+D -> I = 55 via G
+D -> J = 125 via G
+
+E -> A = 150 via D
+E -> B = 100 via D
+E -> C = 60 via D
+E -> D = 35 via D
+E -> F = 180 via D
+E -> G = 55 via D
+E -> H = 190 via D
+E -> I = 90 via D
+E -> J = 160 via D
+
+F -> A = 30 via A
+F -> B = 80 via A
+F -> C = 120 via A
+F -> D = 145 via A
+F -> E = 180 via A
+F -> G = 165 via A
+F -> H = 45 via H
+F -> I = 145 via H or J
+F -> J = 75 via H or J
+
+G -> A = 135 via D
+G -> B = 85 via D
+G -> C = 45 via D
+G -> D = 20 via D
+G -> E = 55 via D
+G -> F = 165 via D
+G -> H = 135 via I
+G -> I = 35 via I
+G -> J = 105 via I
+
+H -> A = 75 via F
+H -> B = 125 via F
+H -> C = 165 via F
+H -> D = 155 via J
+H -> E = 190 via J
+H -> F = 45 via F
+H -> G = 135 via J
+H -> I = 100 via J
+H -> J = 30 via J
+
+I -> A = 170 via G
+I -> B = 120 via G
+I -> C = 80 via G
+I -> D = 55 via G
+I -> E = 90 via G
+I -> F = 145 via J
+I -> G = 35 via G
+I -> H = 100 via J
+I -> J = 70 via J
+
+J -> A = 105 via F or H
+J -> B = 155 via F or H
+J -> C = 150 via I
+J -> D = 125 via I
+J -> E = 160 via I
+J -> F = 75 via F or H
+J -> G = 105 via I
+J -> H = 30 via H
+J -> I = 70 via I

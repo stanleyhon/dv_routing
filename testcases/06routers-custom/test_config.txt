@@ -1,0 +1,35 @@
+A -> B = 8 via B
+A -> C = 9.8 via B
+A -> D = 9.5 via F
+A -> E = 4.5 via F
+A -> F = 1 via F
+
+B -> A = 8 via A
+B -> C = 1.8 via C
+B -> D = 3.4 via C
+B -> E = 12.5 via A
+B -> F = 9 via A
+
+C -> A = 9.8 via B
+C -> B = 1.8 via B
+C -> D = 1.6 via D
+C -> E = 13.6 via D
+C -> F = 10.1 via D
+
+D -> A = 9.5 via F
+D -> B = 3.4 via C
+D -> C = 1.6 via C
+D -> E = 12 via F
+D -> F = 8.5 via F
+
+E -> A = 4.5 via F
+E -> B = 12.5 via F
+E -> C = 13.6 via F
+E -> D = 12 via F
+E -> F = 3.5 via F
+
+F -> A = 1 via A
+F -> B = 9 via A
+F -> C = 10.1 via D
+F -> D = 8.5 via D
+F -> E = 3.5 via E
