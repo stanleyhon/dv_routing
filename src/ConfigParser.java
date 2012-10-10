@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,34 @@ import java.util.ArrayList;
  */
 public abstract class ConfigParser {
 
-    public static ArrayList<> parse (String configFilePath) {
+   public static ArrayList<Neighbour> parse (String configFilePath) {
+      ArrayList<Neighbour> neighbours = new ArrayList<Neighbour> ();
+      BufferedReader inputStream;
+      try {
+         inputStream = new BufferedReader (new FileReader (configFilePath));
+      } catch (FileNotFoundException e) {
+         System.out.println ("Could not read Configuration file");
+         return null;
+      }
 
-    }
+      try {
+         String s = inputStream.readLine (); // This line should be the number of neighbours
+         // We don't need that information.
+         s = inputStream.readLine (); // So read the next one.
+         while (s != null) {
+            String[] splitLine = s.split (" ");
+            if (splitLine.length == 3) { // NODE_ID NODE_DISTANCE NODE_PORT
+               neighbours.add(new Neighbour (splitLine[0].charAt(0), Float.parseFloat(splitLine[1]), Integer.parseInt(splitLine[2])));
+            } else {
+               System.out.println ("Invalid line in the config file");
+            }
+            s = inputStream.readLine();
+         }
+      } catch (IOException e) {
+         System.out.println ("Something went wrong reading the config file");
+      }
+
+      return neighbours;
+   }
 }
+
