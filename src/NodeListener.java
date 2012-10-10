@@ -26,12 +26,12 @@ public class NodeListener extends Thread {
             byte[] receiveData = new byte[1024];
             // check for messages
             DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
-            System.out.println ("LISTENING\n");
             listenSocket.receive(receivePacket);
             String incomingString = new String(receivePacket.getData());
             incomingData.add(incomingString); // Send this into our input data.
-            System.out.println ("Received:\n ");
+            System.out.println ("*****************Received:*************************\n ");
             System.out.print (incomingString);
+            System.out.println ("\n*****************Received:*************************\n ");
          } catch (IOException e) {
             System.out.println ("something went wrong listening!");
          }

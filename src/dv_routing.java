@@ -36,6 +36,8 @@ public class dv_routing {
 
       // NodeConfigurator.configure (new Node(), "/Users/stanleyhon/Documents/git/COMP3331-Assignment2/testcases/02routers/A.txt");
 
+      System.out.println ("My NODE_ID is " + NODE_ID);
+
       Node n = new Node (NODE_ID, NODE_PORT);
       NodeConfigurator.configure (n, CONFIG_FILE_ADDRESS);
       n.start();
