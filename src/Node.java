@@ -1,4 +1,6 @@
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.*;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
  * CSE Username: shon348
  * UNSW StudentID: z3373433
  */
+
 public class Node {
    private DatagramSocket listenSocket;
 
@@ -21,11 +24,13 @@ public class Node {
 
    private ArrayList<String> incomingData;
 
+   private DistanceTable distanceTable;
+
    public Node (char NODE_ID, int NODE_PORT) {
       this.NODE_ID = NODE_ID;
       this.NODE_PORT = NODE_PORT;
 
-
+      this.distanceTable = new DistanceTable(this.NODE_ID);
 
       incomingData = new ArrayList<String>();
       neighbours = new ArrayList<Neighbour>();
@@ -33,6 +38,7 @@ public class Node {
 
    public void addNeighbour (Neighbour n) {
       this.neighbours.add(n);
+      distanceTable.addVector(n.getNODE_NAME(), n.getNODE_DISTANCE());  // SO BEAST
    }
 
    // This method blocks!
@@ -51,15 +57,21 @@ public class Node {
       // Setup a thread to listening
       NodeListener ns = new NodeListener(incomingData, listenSocket);
       ns.start();
-      while (1 == 1) {
-         // Say HI to all neighbours
-         String s = "";
-         s = s + NODE_ID + '\n';
-         s = s + "HELLO THERE\n";
-         s = s + "**\n";
-         byte[] sendData = s.getBytes();
 
-         System.out.println ("thinking about saying HI!");
+      while (1 == 1) {
+         // Send our DistanceTable to all our neighbours
+         byte[] sendData = {};
+         try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream ();
+            ObjectOutputStream serializer = new ObjectOutputStream(outputStream);
+            serializer.writeObject(this.distanceTable);
+            sendData = outputStream.toByteArray();
+            System.err.println ("JUST BTW, the serialized thing is " + sendData.length + " long");
+         } catch (IOException e) {
+            System.out.println ("Something went wrong serialising our DistanceTable");
+         }
+
+         System.out.println ("Sending out distanceTables");
 
          for (Neighbour n : neighbours) {
             try {
@@ -73,7 +85,7 @@ public class Node {
                }
                sendSocket.send(sendPacket);
                sendSocket.close();
-               System.out.println ("finished sending HI to " + n.getNODE_NAME() + "\n\n");
+               System.out.println ("finished sending distanceTable to " + n.getNODE_NAME() + "\n\n");
             } catch (UnknownHostException e) {
                System.out.println ("GG Couldn't find localhost...");
             } catch (IOException e) {
