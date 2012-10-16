@@ -9,14 +9,12 @@ import java.util.ArrayList;
  */
 public abstract class ConfigParser {
 
-   public static ArrayList<Neighbour> parse (String configFilePath) {
-      ArrayList<Neighbour> neighbours = new ArrayList<Neighbour> ();
+   public static void parse (int dv[][], String configFilePath) {
       BufferedReader inputStream;
       try {
          inputStream = new BufferedReader (new FileReader (configFilePath));
       } catch (FileNotFoundException e) {
          System.out.println ("Could not read Configuration file");
-         return null;
       }
 
       try {
@@ -36,7 +34,6 @@ public abstract class ConfigParser {
          System.out.println ("Something went wrong reading the config file");
       }
 
-      return neighbours;
    }
 }
 
