@@ -39,7 +39,7 @@ public class dv_routing {
       System.out.println ("My NODE_ID is " + NODE_ID);
 
       Node n = new Node (NODE_ID, NODE_PORT);
-      NodeConfigurator.configure (n, CONFIG_FILE_ADDRESS);
+      ConfigParser.parse(n, CONFIG_FILE_ADDRESS, NODE_ID);
       n.start();
 
       return;

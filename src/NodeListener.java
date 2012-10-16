@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
@@ -11,29 +11,41 @@ import java.util.ArrayList;
  */
 public class NodeListener extends Thread {
 
-   private ArrayList<String> incomingData;
+   private ArrayList<DistanceVectorTable> incomingData;
    private DatagramSocket listenSocket;
+   private boolean finished = false;
 
-   public NodeListener (ArrayList<String> incomingData, DatagramSocket listenSocket) {
+   public NodeListener (ArrayList<DistanceVectorTable> incomingData, DatagramSocket listenSocket) {
       this.incomingData = incomingData;
       this.listenSocket = listenSocket;
    }
 
+   public void stopListening () {
+      this.finished = true;
+   }
+
    public void run () {
-      boolean finished = false;
+
       while (finished == false) {
          try {
-            byte[] receiveData = new byte[1024];
+            byte[] receiveData = new byte[5000];
             // check for messages
             DatagramPacket receivePacket = new DatagramPacket (receiveData, receiveData.length);
             listenSocket.receive(receivePacket);
-            String incomingString = new String(receivePacket.getData());
-            incomingData.add(incomingString); // Send this into our input data.
-            System.out.println ("*****************Received:*************************\n ");
-            System.out.print (incomingString);
-            System.out.println ("\n*****************Received:*************************\n ");
+            ByteArrayInputStream bis = new ByteArrayInputStream(receiveData);
+            ObjectInputStream ois = new ObjectInputStream(bis);
+
+            DistanceVectorTable incomingDistanceVector = (DistanceVectorTable) ois.readObject();
+            ois.close();
+            bis.close();
+
+            incomingData.add(incomingDistanceVector);
+            // System.out.println ("***************** Received a vector table from " + incomingDistanceVector.owner + " *************************\n ");
+
          } catch (IOException e) {
             System.out.println ("something went wrong listening!");
+         } catch (ClassNotFoundException e) {
+            System.out.println ("something went wrong reconstructing the DistanceVectorTable");
          }
       }
    }

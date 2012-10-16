@@ -1,6 +1,10 @@
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // helloosdflksdfjlsdkfjsldkjsdlfkjlsdkf
 
@@ -15,12 +19,12 @@ public class Node {
 
    private DatagramSocket sendSocket;
 
-   private ArrayList<Neighbour> neighbours;
+   public DistanceVectorTable dvt;
 
    public char NODE_ID;
    public int NODE_PORT;
 
-   private ArrayList<String> incomingData;
+   private ArrayList<DistanceVectorTable> incomingData;
 
    public Node (char NODE_ID, int NODE_PORT) {
       this.NODE_ID = NODE_ID;
@@ -28,12 +32,7 @@ public class Node {
 
 
 
-      incomingData = new ArrayList<String>();
-      neighbours = new ArrayList<Neighbour>();
-   }
-
-   public void addNeighbour (Neighbour n) {
-      this.neighbours.add(n);
+      incomingData = new ArrayList<DistanceVectorTable>();
    }
 
    // This method blocks!
@@ -48,25 +47,108 @@ public class Node {
          }
       }
 
-      System.out.println ("setting up thread to listen");
+      // System.out.println ("setting up thread to listen");
       // Setup a thread to listening
       NodeListener ns = new NodeListener(incomingData, listenSocket);
       ns.start();
-      while (1 == 1) {
-         // Say HI to all neighbours
-         String s = "";
-         s = s + NODE_ID + '\n';
-         s = s + "HELLO THERE\n";
-         s = s + "**\n";
-         byte[] sendData = s.getBytes();
 
-         System.out.println ("thinking about saying HI!");
+      boolean stop = false;
+      boolean stablized = false;
+      int timesUnchanged = 0;
 
-         for (Neighbour n : neighbours) {
+      HashMap<Character, Boolean> nodeFailureIndicator = new HashMap<Character, Boolean>();
+      HashMap<Character, Integer> nodeFailureCount = new HashMap<Character, Integer>();
+
+
+      for (char c : dvt.neighbours) {
+         nodeFailureCount.put(c, 0);
+         nodeFailureIndicator.put(c, false);
+      }
+
+      while (stop == false) {
+
+         // Assimilate dvt's we got
+         boolean changesMade = false;
+         for (DistanceVectorTable foreignDVT : this.incomingData) {
+            if (this.dvt.assimilate(foreignDVT) == true) {
+               changesMade = true;
+               timesUnchanged = 0;
+            }
+
+            // add one to the count of received by this foreigner
+            nodeFailureIndicator.put(foreignDVT.owner, false);
+         }
+
+         // See how much things have been failing
+         for (char c : dvt.neighbours) {
+            if (!dvt.failedNodes.contains(c)) {
+               if (nodeFailureIndicator.get(c) == true) {
+                  // C MISSED A PACKET!
+                  nodeFailureCount.put(c, nodeFailureCount.get(c) + 1);
+               } else {
+                  nodeFailureCount.put(c, 0);
+                  nodeFailureIndicator.put(c, true);
+               }
+            }
+         }
+
+         ArrayList<Character> failThese = new ArrayList<Character>();
+         // If anyone hits 3 failures
+         for (char c : dvt.neighbours) {
+            if (nodeFailureCount.get(c) == 3) {
+               if (!this.dvt.failedNodes.contains(c)) {
+                  failThese.add(c);
+               }
+            }
+         }
+
+         for (char c : failThese) {
+            this.dvt.nodeFailed(c);
+         }
+
+
+         if (changesMade == false) {
+            timesUnchanged++;
+         } else if (changesMade == true && stablized == true) {
+            stablized = false;
+            timesUnchanged = 0;
+         }
+
+         if (timesUnchanged >= 5 && stablized == false) {
+            // display our DVT
+            // this.dvt.displayDVT();
+            stablized = true;
+         }
+
+         this.dvt.displayDVT();
+         incomingData.clear();
+
+         byte sendData[] = {};
+         try {
+            // Send our dv to neighbours
+            ByteOutputStream bos = new ByteOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+
+            oos.writeObject(this.dvt);
+            sendData = bos.getBytes();
+
+            oos.close();
+            bos.close();
+
+         } catch (IOException e) {
+            System.out.println ("Something went wrong serializing the DistanceVectorTable");
+         }
+
+         assert (sendData.length != 0) : "Something went wrong serializing the DistanceVectorTable";
+
+
+
+
+         for (char neighbour : this.dvt.neighbourPorts.keySet()) {
             try {
                InetAddress IPAddress = InetAddress.getByName ("localhost");
-               System.out.println ("trying to send a message to port " + n.getNODE_PORT() + " we're on port " + this.NODE_PORT);
-               DatagramPacket sendPacket = new DatagramPacket (sendData, sendData.length, IPAddress, n.getNODE_PORT());
+               // System.out.println ("trying to send a DVT to port " + dvt.neighbourPorts.get(neighbour));
+               DatagramPacket sendPacket = new DatagramPacket (sendData, sendData.length, IPAddress, dvt.neighbourPorts.get(neighbour));
                try {
                   sendSocket = new DatagramSocket();
                } catch (SocketException e) {
@@ -74,7 +156,7 @@ public class Node {
                }
                sendSocket.send(sendPacket);
                sendSocket.close();
-               System.out.println ("finished sending HI to " + n.getNODE_NAME() + "\n\n");
+               // System.out.println ("finished sending vector table to " + dvt.neighbourPorts.get (neighbour) + "\n\n");
             } catch (UnknownHostException e) {
                System.out.println ("GG Couldn't find localhost...");
             } catch (IOException e) {
