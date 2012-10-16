@@ -4,6 +4,7 @@
  * CSE Username: shon348
  * UNSW StudentID: z3373433
  */
+
 public class Neighbour {
    private char NODE_NAME;
    private float NODE_DISTANCE;
