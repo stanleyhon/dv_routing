@@ -7,7 +7,6 @@
 
 public class Neighbour {
    private char NODE_NAME;
-   private float NODE_DISTANCE;
    private int NODE_PORT;
 
    public Neighbour (char NODE_NAME, float NODE_DISTANCE, int NODE_PORT) {
