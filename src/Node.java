@@ -1,12 +1,9 @@
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.io.ByteArrayOutputStream;
-
 // helloosdflksdfjlsdkfjsldkjsdlfkjlsdkf
 
 /**
@@ -129,11 +126,11 @@ public class Node {
          byte sendData[] = {};
          try {
             // Send our dv to neighbours
-            ByteOutputStream bos = new ByteOutputStream();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(bos);
 
             oos.writeObject(this.dvt);
-            sendData = bos.getBytes();
+            sendData = bos.toByteArray();
 
             oos.close();
             bos.close();
