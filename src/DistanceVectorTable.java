@@ -14,6 +14,9 @@ public class DistanceVectorTable implements Serializable {
    // The actual table
    private Float table[][] = new Float[MAX_DISTANCE_VECTOR_TABLE_SIZE][MAX_DISTANCE_VECTOR_TABLE_SIZE];
 
+   // flag to show changes to dvt
+   private boolean changeMade;
+
    // Owner ID Character
    public char owner;
 
@@ -69,7 +72,7 @@ public class DistanceVectorTable implements Serializable {
       char via = '-';
 
       while (i < IDList.length) {
-         if (table[i][row] != 9999f && table[i][row] != -1f) { // We have a way of getting to 'to'
+         if (table[i][row] != 9999f) { // We have a way of getting to 'to'
             if (table[i][row] < bestDistance) {
                bestDistance = table[i][row];
                via = getCharacter(i);
@@ -94,12 +97,21 @@ public class DistanceVectorTable implements Serializable {
       // Rule out our row
       int ourRow = getIndex(ourselves);
 
+      // see if the foreignTable has any nodes that have died
+      // we should take them into account too if that's the case.
+      for (char c : dvt.failedNodes) {
+         if (!this.failedNodes.contains(c)) {
+            changeMade = true; // we got told of a new one, so stuff will change.
+            this.nodeFailed(c);
+         }
+      }
+
       // Ask what the best way to get to everything is
       int i = 0;
       while (i < IDList.length) {
          if (IDList[i] != ourselves) { // if we aren't looking for ourselves
             char result = dvt.lookupLink(IDList[i]); // Ask dvt what the best way is.
-            if (result != '-' && result != -1f) { // if we found a good result, see if it's better than what we've got
+            if (result != '-') { // if we found a good result, see if it's better than what we've got
                char ourResult = this.lookupLink(IDList[i]);
                if (ourResult == '-') { // If we don't have anything yet, their result is best - take it!
                   changeMade = true;
@@ -129,8 +141,6 @@ public class DistanceVectorTable implements Serializable {
                   }
 
                }
-            } else if (result == -1f) { // INDICATES NODE HAS FAILED
-               nodeFailed (IDList[i]);
             }
          }
          i++;
@@ -159,12 +169,28 @@ public class DistanceVectorTable implements Serializable {
       return IDList[index];
    }
 
+   public void printTable () {
+      System.out.println("________________________");
+      int i = 0;
+      while (i < table.length) {
+         int j = 0;
+         while (j < table.length) {
+            //System.out.print (table[j][i].toString() + ' ');
+            System.out.printf("%010f ", table[j][i]);
+            j++;
+         }
+         System.out.println();
+         i++;
+      }
+      System.out.println("________________________");
+   }
+
    public void displayDVT () {
       int i = 0;
       while (i < IDList.length) {
          char best = lookupLink(IDList[i]);
 
-         if (best != '-' && lookup(lookupLink(IDList[i]), IDList[i]) != 9999f && lookup(lookupLink(IDList[i]), IDList[i]) != -1f) {
+         if (best != '-' && lookup(lookupLink(IDList[i]), IDList[i]) != 9999f) {
             char targetNode = IDList[i]; // what we're trying to get to
             char nextHop = lookupLink(IDList[i]); // what the supposed next hop is
             /*
@@ -194,13 +220,17 @@ public class DistanceVectorTable implements Serializable {
          this.neighbours.remove((Character) c);
       }
 
-      this.failedNodes.add(c);
-      int viaColumn = getIndex(c);
-      int i = 0;
-      while (i < IDList.length) {
-         table[viaColumn][i] = -1f;
-         i++;
+      if (!this.failedNodes.contains(c)) {
+         this.failedNodes.add(c);
+         int viaColumn = getIndex(c);
+         int i = 0;
+         while (i < IDList.length) {
+            table[viaColumn][i] = 9999f;
+            i++;
+         }
       }
+
+
    }
 
 }

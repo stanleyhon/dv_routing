@@ -5,7 +5,7 @@
  * UNSW StudentID: z3373433
  */
 
-public class dv_routing {
+public class dv_routing_v1 {
 
    public static char NODE_ID;
    public static int NODE_PORT;
@@ -36,7 +36,7 @@ public class dv_routing {
 
       // NodeConfigurator.configure (new Node(), "/Users/stanleyhon/Documents/git/COMP3331-Assignment2/testcases/02routers/A.txt");
 
-      System.out.println ("My NODE_ID is " + NODE_ID);
+      // System.out.println ("My NODE_ID is " + NODE_ID);
 
       Node n = new Node (NODE_ID, NODE_PORT);
       ConfigParser.parse(n, CONFIG_FILE_ADDRESS, NODE_ID);

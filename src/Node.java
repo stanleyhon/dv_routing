@@ -110,17 +110,19 @@ public class Node {
          if (changesMade == false) {
             timesUnchanged++;
          } else if (changesMade == true && stablized == true) {
+            System.out.println ("DESTABLIZED! recalculating...");
             stablized = false;
             timesUnchanged = 0;
          }
 
          if (timesUnchanged >= 5 && stablized == false) {
             // display our DVT
-            // this.dvt.displayDVT();
             stablized = true;
+            this.dvt.displayDVT();
+            System.out.println ("STABLIZED!");
          }
 
-         this.dvt.displayDVT();
+
          incomingData.clear();
 
          byte sendData[] = {};
